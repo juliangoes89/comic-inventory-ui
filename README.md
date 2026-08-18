@@ -1,36 +1,51 @@
-Este es un proyecto de [Next.js](https://nextjs.org) inicializado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Comic Inventory UI
 
-## Primeros pasos
+Interfaz web construida con [Next.js](https://nextjs.org). Requiere una versión de Node.js compatible con Next.js 16.
 
-Primero, ejecuta el servidor de desarrollo:
+## Desarrollo
+
+Instala las dependencias y arranca el servidor local:
 
 ```bash
+npm install
 npm run dev
-# o
-yarn dev
-# o
-pnpm dev
-# o
-bun dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+Abre [http://localhost:3000](http://localhost:3000) para usar la aplicación.
 
-Puedes comenzar a editar la página modificando `app/page.tsx`. La página se actualiza automáticamente mientras editas el archivo.
+## Análisis estático de seguridad
 
-Este proyecto usa [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para optimizar y cargar automáticamente [Geist](https://vercel.com/font), una nueva familia de fuentes de Vercel.
+El proyecto integra [`eslint-plugin-security`](https://github.com/eslint-community/eslint-plugin-security) con las reglas recomendadas. Detecta patrones potencialmente inseguros, como el uso de `eval`, expresiones regulares no seguras, carga dinámica de módulos y acceso a rutas de archivos no literales.
 
-## Aprende más
+Ejecuta el análisis de seguridad del código de la aplicación:
 
-Para aprender más sobre Next.js, consulta los siguientes recursos:
+```bash
+npm run lint:security
+```
 
-- [Documentación de Next.js](https://nextjs.org/docs) - aprende sobre las funciones y la API de Next.js.
-- [Aprende Next.js](https://nextjs.org/learn) - un tutorial interactivo de Next.js.
+El lint habitual también incluye estas reglas y revisa todo el proyecto:
 
-Puedes consultar [el repositorio de GitHub de Next.js](https://github.com/vercel/next.js) - ¡tu retroalimentación y contribuciones son bienvenidas!
+```bash
+npm run lint
+```
 
-## Despliegue en Vercel
+Los hallazgos del plugin se muestran como advertencias para facilitar su revisión. Ninguno de estos comandos modifica el código ni actualiza dependencias.
 
-La forma más fácil de desplegar tu aplicación Next.js es usar la [Plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) de los creadores de Next.js.
+## Alertas de vulnerabilidades de dependencias
 
-Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
+Las vulnerabilidades conocidas de dependencias se notifican con **Dependabot Alerts** de GitHub. Para activarlas en el repositorio remoto:
+
+1. Abre el repositorio en GitHub y ve a **Settings**.
+2. Abre **Code security and analysis**.
+3. Habilita **Dependabot alerts**.
+4. Mantén deshabilitado **Dependabot security updates**.
+
+No se incluye un archivo `.github/dependabot.yml`, ya que ese mecanismo programa actualizaciones y puede abrir pull requests de actualización. Con la configuración anterior GitHub muestra las vulnerabilidades en la pestaña **Security** sin aplicar correcciones ni crear actualizaciones automáticas.
+
+## Verificación de producción
+
+Para compilar la aplicación:
+
+```bash
+npm run build
+```
