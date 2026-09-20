@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ComicList } from "@/components/comic-list";
 import { getComics, getEditoriales, type Comic, type Editorial } from "@/lib/api";
 
@@ -35,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     let isCurrent = true;
-
+    console.log("Loading inventory...");
     void requestInventory()
       .then(({ comicData, editorialData }) => {
         if (isCurrent) {
