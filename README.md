@@ -42,6 +42,28 @@ Las vulnerabilidades conocidas de dependencias se notifican con **Dependabot Ale
 
 No se incluye un archivo `.github/dependabot.yml`, ya que ese mecanismo programa actualizaciones y puede abrir pull requests de actualización. Con la configuración anterior GitHub muestra las vulnerabilidades en la pestaña **Security** sin aplicar correcciones ni crear actualizaciones automáticas.
 
+## Pruebas unitarias
+
+Para ejecutar la suite de pruebas del proyecto en modo interactivo:
+
+```bash
+npm run test
+```
+
+Para lanzarlas una sola vez y obtener el resultado final de la ejecución:
+
+```bash
+npm run test:run
+```
+
+Para ejecutar la suite con reporte de cobertura de código:
+
+```bash
+npm run test:coverage
+```
+
+Este comando ejecuta Vitest en modo no interactivo y genera un informe de cobertura en la carpeta `coverage` con salida en consola, HTML y LCOV. También permite comprobar qué ficheros tienen cobertura parcial o ausente.
+
 ## Verificación de producción
 
 Para compilar la aplicación:
