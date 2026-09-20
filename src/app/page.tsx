@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState} from "react";
 import { ComicList } from "@/components/comic-list";
 import { getComics, getEditoriales, type Comic, type Editorial } from "@/lib/api";
 
