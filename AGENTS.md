@@ -24,3 +24,9 @@ npm run lint:security
 - Mantén el modo estricto de TypeScript; no introduzcas `any` ni `@ts-ignore` para evitar errores del compilador.
 
 Consulta [README.md](README.md) para el detalle de cada herramienta.
+
+## Pruebas unitarias y cobertura
+
+- Toda nueva lógica o corrección debe incluir o actualizar pruebas unitarias relevantes.
+- Antes de dar por terminada una tarea, ejecuta `npm run test:coverage` y verifica que la cobertura global sea como mínimo del 80%.
+- Si la cobertura queda por debajo del 80%, añade las pruebas necesarias; no reduzcas el umbral ni excluyas código para ocultar la falta de cobertura.
