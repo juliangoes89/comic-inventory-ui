@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # No bloqueantes
+      - name: Lint
+        continue-on-error: true
+        run: npm run lint
+
+      - name: Análisis de seguridad (eslint-plugin-security)
+        continue-on-error: true
+        run: npm run lint:security
+
+      - name: Análisis de dependencias (npm audit)
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+      # Bloqueantes
+      - name: Pruebas unitarias
+        run: npm run test:run
+
+      - name: Coverage (mínimo 80%)
+        run: npm run test:coverage
+
+      - name: Subir reporte de coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+          if-no-files-found: ignore
+
+      - name: Build
+        run: npm run build
