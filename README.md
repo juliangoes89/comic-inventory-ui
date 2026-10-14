@@ -71,3 +71,31 @@ Para compilar la aplicación:
 ```bash
 npm run build
 ```
+
+## Integración continua (CI)
+
+El workflow [.github/workflows/ci.yml](.github/workflows/ci.yml) se ejecuta en cada push a `main` y en cada pull request dirigido a `main`. Cada paso es un job independiente:
+
+| Job | Comando | Bloqueante |
+| --- | --- | --- |
+| Lint | `npm run lint` | No |
+| Análisis de seguridad | `npm run lint:security` | No |
+| Análisis de dependencias | `npm audit --audit-level=high` | No |
+| Pruebas unitarias | `npm run test:run` | Sí |
+| Coverage (mínimo 80%) | `npm run test:coverage` | Sí |
+| Build | `npm run build` | Sí (requiere pruebas y coverage) |
+
+Los jobs no bloqueantes usan `continue-on-error`: si fallan, el pipeline continúa y el resultado queda visible en GitHub Actions. El umbral de cobertura del 80% (líneas, funciones, ramas y sentencias) está definido en `vitest.config.ts`. El reporte de cobertura se publica como artefacto `coverage`.
+
+## Despliegue continuo (CD)
+
+El workflow [.github/workflows/cd.yml](.github/workflows/cd.yml) despliega la aplicación en Azure App Service (`comic-inventory-ui`, grupo de recursos `ComicInventory-rg`). Se ejecuta cuando el workflow CI termina con éxito en `main`, o manualmente con `workflow_dispatch`.
+
+1. **Build:** compila con `output: "standalone"` y `NEXT_PUBLIC_API_URL` apuntando al backend desplegado, y genera el paquete.
+2. **Deploy:** publica el paquete en el entorno `production` con `azure/webapps-deploy`.
+
+Configuración necesaria:
+
+- Secret `AZURE_WEBAPP_PUBLISH_PROFILE` en GitHub (Settings → Secrets and variables → Actions), con el contenido del perfil de publicación descargado desde Azure Portal.
+- Startup Command del App Service: `node server.js`.
+- CORS del backend habilitado para `https://comic-inventory-ui.azurewebsites.net`.
